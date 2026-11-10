@@ -1,0 +1,102 @@
+_format_version: "3.0"
+_transform: true
+
+########################################################
+# SERVICES
+########################################################
+
+services:
+  - name: public-holiday-calendar-service
+    host: public-holiday-calendar-service
+    port: 443
+    protocol: https
+    path: /api
+    retries: 5
+    connect_timeout: 60000
+    write_timeout: 60000
+    read_timeout: 60000
+    routes:
+      - name: public-holiday-calendar-service-get-availablecountries
+        protocols:
+          - https
+          - http
+        methods:
+          - GET
+        hosts:
+          - api.example.com
+        paths:
+          - /AvailableCountries
+        strip_path: true
+        preserve_host: false
+        https_redirect_status_code: 426
+      - name: public-holiday-calendar-service-get-countryinfo-countrycode
+        protocols:
+          - https
+          - http
+        methods:
+          - GET
+        hosts:
+          - api.example.com
+        paths:
+          - /CountryInfo/{countryCode}
+        strip_path: true
+        preserve_host: false
+        https_redirect_status_code: 426
+      - name: public-holiday-calendar-service-get-publicholidays-year-countrycode
+        protocols:
+          - https
+          - http
+        methods:
+          - GET
+        hosts:
+          - api.example.com
+        paths:
+          - /PublicHolidays/{year}/{countryCode}
+        strip_path: true
+        preserve_host: false
+        https_redirect_status_code: 426
+      - name: public-holiday-calendar-service-get-nextpublicholidays-countrycode
+        protocols:
+          - https
+          - http
+        methods:
+          - GET
+        hosts:
+          - api.example.com
+        paths:
+          - /NextPublicHolidays/{countryCode}
+        strip_path: true
+        preserve_host: false
+        https_redirect_status_code: 426
+      - name: public-holiday-calendar-service-get-longweekend-year-countrycode
+        protocols:
+          - https
+          - http
+        methods:
+          - GET
+        hosts:
+          - api.example.com
+        paths:
+          - /LongWeekend/{year}/{countryCode}
+        strip_path: true
+        preserve_host: false
+        https_redirect_status_code: 426
+
+########################################################
+# PLUGINS
+########################################################
+
+plugins:
+  []
+
+########################################################
+# UPSTREAMS + TARGETS
+########################################################
+
+upstreams:
+  - name: public-holiday-calendar-service
+    algorithm: round-robin
+    slots: 10000
+    targets:
+      - target: api.example.com:443
+        weight: 100

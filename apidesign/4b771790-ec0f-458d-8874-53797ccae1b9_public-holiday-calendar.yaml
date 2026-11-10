@@ -1,0 +1,408 @@
+openapi: 3.0.3
+info:
+  title: Public Holiday Calendar Service
+  version: 1.0.0
+  description: |
+    Public holidays for more than a hundred countries: the holidays of a
+    year, the next upcoming holidays, long weekends that can be planned
+    around them, and basic facts about each country. Used by scheduling,
+    payroll and travel features that must know when a country is closed.
+    Backed by the free public Nager.Date service, so the server URL is
+    real and reachable and a gateway generated from this specification
+    can be called end to end.
+  contact:
+    name: ForgeSphere Developer Experience
+    email: devex@forgesphere.example.com
+
+servers:
+  - url: https://date.nager.at/api/v3
+    description: Public Holiday Server
+
+security:
+  - bearerAuth: []
+
+tags:
+  - name: Holidays
+    description: Public holidays and long weekends of a country.
+  - name: Countries
+    description: The countries the calendar covers and facts about them.
+
+paths:
+  # ==================== COUNTRIES ====================
+  /AvailableCountries:
+    get:
+      tags: [Countries]
+      summary: List the countries the calendar covers
+      description: |
+        Returns every country that has a public holiday calendar, with its
+        two-letter country code. The code is what the other operations take
+        as countryCode.
+      operationId: listCountries
+      responses:
+        '200':
+          description: The countries that have a holiday calendar.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Country'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+  /CountryInfo/{countryCode}:
+    get:
+      tags: [Countries]
+      summary: Get facts about a country
+      description: |
+        Returns the common, native and official name of a country, its
+        region, and the countries that share a border with it.
+      operationId: getCountryInfo
+      parameters:
+        - name: countryCode
+          in: path
+          required: true
+          schema:
+            type: string
+            minLength: 2
+            maxLength: 2
+          description: "Two-letter ISO 3166 country code."
+          example: "US"
+      responses:
+        '200':
+          description: Facts about the requested country.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CountryInfo'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+  # ==================== HOLIDAYS ====================
+  /PublicHolidays/{year}/{countryCode}:
+    get:
+      tags: [Holidays]
+      summary: List the public holidays of a country for a year
+      description: |
+        Returns every public holiday of the country in the given year, in
+        date order. A country without holiday data answers with no content.
+      operationId: listPublicHolidays
+      parameters:
+        - name: year
+          in: path
+          required: true
+          schema:
+            type: integer
+            minimum: 1900
+            maximum: 2100
+          description: "The calendar year of the holidays."
+          example: 2026
+        - name: countryCode
+          in: path
+          required: true
+          schema:
+            type: string
+            minLength: 2
+            maxLength: 2
+          description: "Two-letter ISO 3166 country code."
+          example: "US"
+      responses:
+        '200':
+          description: The public holidays of the country in that year.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Holiday'
+        '204':
+          description: The country has no holiday data for that year.
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+  /NextPublicHolidays/{countryCode}:
+    get:
+      tags: [Holidays]
+      summary: List the next public holidays of a country
+      description: |
+        Returns the public holidays that are still to come in the country,
+        starting today, in date order. A country without holiday data
+        answers with no content.
+      operationId: listNextPublicHolidays
+      parameters:
+        - name: countryCode
+          in: path
+          required: true
+          schema:
+            type: string
+            minLength: 2
+            maxLength: 2
+          description: "Two-letter ISO 3166 country code."
+          example: "US"
+      responses:
+        '200':
+          description: The upcoming public holidays of the country.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Holiday'
+        '204':
+          description: The country has no holiday data.
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+  /LongWeekend/{year}/{countryCode}:
+    get:
+      tags: [Holidays]
+      summary: List the long weekends of a country for a year
+      description: |
+        Returns the stretches of three or more days off in a row that come
+        from a public holiday next to a weekend. A stretch may need one
+        bridge day taken off to be complete.
+      operationId: listLongWeekends
+      parameters:
+        - name: year
+          in: path
+          required: true
+          schema:
+            type: integer
+            minimum: 1900
+            maximum: 2100
+          description: "The calendar year of the long weekends."
+          example: 2026
+        - name: countryCode
+          in: path
+          required: true
+          schema:
+            type: string
+            minLength: 2
+            maxLength: 2
+          description: "Two-letter ISO 3166 country code."
+          example: "US"
+      responses:
+        '200':
+          description: The long weekends of the country in that year.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LongWeekend'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: "JWT token issued to API consumers."
+
+  schemas:
+    Country:
+      type: object
+      required: [countryCode, name]
+      properties:
+        countryCode:
+          type: string
+          description: "Two-letter ISO 3166 country code."
+          example: "US"
+        name:
+          type: string
+          description: "Common name of the country."
+          example: "United States"
+
+    CountryInfo:
+      type: object
+      required: [commonName, officialName, countryCode, region]
+      properties:
+        commonName:
+          type: string
+          description: "Everyday name of the country."
+          example: "United States"
+        nativeName:
+          type: string
+          description: "Name of the country in its own language."
+          example: "United States"
+        officialName:
+          type: string
+          description: "Official name of the country."
+          example: "United States of America"
+        countryCode:
+          type: string
+          description: "Two-letter ISO 3166 country code."
+          example: "US"
+        region:
+          type: string
+          description: "World region the country belongs to."
+          example: "Americas"
+        borders:
+          type: array
+          description: "The countries that share a border with this country."
+          items:
+            $ref: '#/components/schemas/BorderCountry'
+          example:
+            - commonName: "Canada"
+              officialName: "Canada"
+              countryCode: "CA"
+              region: "Americas"
+
+    BorderCountry:
+      type: object
+      properties:
+        commonName:
+          type: string
+          description: "Everyday name of the neighbouring country."
+          example: "Canada"
+        officialName:
+          type: string
+          description: "Official name of the neighbouring country."
+          example: "Canada"
+        countryCode:
+          type: string
+          description: "Two-letter ISO 3166 country code."
+          example: "CA"
+        region:
+          type: string
+          description: "World region the neighbouring country belongs to."
+          example: "Americas"
+
+    Holiday:
+      type: object
+      required: [date, name, countryCode]
+      properties:
+        date:
+          type: string
+          format: date
+          description: "The day of the holiday."
+          example: "2026-11-26"
+        localName:
+          type: string
+          description: "Name of the holiday in the local language."
+          example: "Thanksgiving Day"
+        name:
+          type: string
+          description: "Name of the holiday in English."
+          example: "Thanksgiving Day"
+        countryCode:
+          type: string
+          description: "Two-letter ISO 3166 country code."
+          example: "US"
+        fixed:
+          type: boolean
+          description: "True when the holiday falls on the same date every year."
+          example: false
+        global:
+          type: boolean
+          description: "True when the holiday applies to the whole country."
+          example: true
+        counties:
+          type: array
+          nullable: true
+          description: "The regions the holiday applies to when it is not nationwide."
+          items:
+            type: string
+          example: ["US-CA", "US-NY"]
+        launchYear:
+          type: integer
+          nullable: true
+          description: "The year the holiday was first observed, when known."
+          example: 1863
+        types:
+          type: array
+          description: "The kinds of day off the holiday is."
+          items:
+            type: string
+            enum: [Public, Bank, School, Authorities, Optional, Observance]
+          example: ["Public", "Bank"]
+
+    LongWeekend:
+      type: object
+      required: [startDate, endDate, dayCount, needBridgeDay]
+      properties:
+        startDate:
+          type: string
+          format: date
+          description: "First day off of the long weekend."
+          example: "2026-11-26"
+        endDate:
+          type: string
+          format: date
+          description: "Last day off of the long weekend."
+          example: "2026-11-29"
+        dayCount:
+          type: integer
+          description: "Number of days off in a row."
+          example: 4
+        needBridgeDay:
+          type: boolean
+          description: "True when a working day in between must be taken off to get the long weekend."
+          example: false
+        bridgeDays:
+          type: array
+          description: "The working days to take off to complete the long weekend."
+          items:
+            type: string
+            format: date
+          example: []
+
+    ProblemDetails:
+      type: object
+      required: [title, status]
+      properties:
+        title:
+          type: string
+          description: "Short summary of the problem."
+          example: "Unknown country code"
+        status:
+          type: integer
+          description: "The HTTP status code of the error."
+          example: 404
+        detail:
+          type: string
+          description: "What went wrong."
+          example: "The country code provided is invalid or not recognized."
+        errors:
+          type: object
+          description: "Validation problems, listed under the name of each parameter."
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          example:
+            year: ["The specified year '1' is not supported."]
+
+  responses:
+    BadRequest:
+      description: A parameter is not valid, for example a year that is not supported.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+    NotFound:
+      description: The country code is not recognized.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+    InternalError:
+      description: Internal server error.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'

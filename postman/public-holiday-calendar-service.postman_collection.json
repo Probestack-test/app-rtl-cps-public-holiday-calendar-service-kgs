@@ -1,0 +1,761 @@
+{
+  "info": {
+    "name": "Public Holiday Calendar Service Postman Collection",
+    "description": "Public holidays for more than a hundred countries: the holidays of a\nyear, the next upcoming holidays, long weekends that can be planned\naround them, and basic facts about each country. Used by scheduling,\npayroll and travel features that must know when a country is closed.\nBacked by the free public Nager.Date service, so the server URL is\nreal and reachable and a gateway generated from this specification\ncan be called end to end.\n\nOpenAPI version: 3.0.3",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{accessToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://date.nager.at/api/v3",
+      "type": "string",
+      "description": "Override with the base URL of the deployed Kong gateway."
+    },
+    {
+      "key": "accessToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "countryCode",
+      "value": "",
+      "type": "string",
+      "description": "Two-letter ISO 3166 country code."
+    },
+    {
+      "key": "year",
+      "value": "",
+      "type": "string",
+      "description": "The calendar year of the holidays."
+    }
+  ],
+  "item": [
+    {
+      "name": "List the countries the calendar covers",
+      "request": {
+        "method": "GET",
+        "description": "List the countries the calendar covers\n\nResponses:\n- 200: The countries that have a holiday calendar.\n- 500: Response",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/AvailableCountries",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "AvailableCountries"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "200 The countries that have a holiday calendar.",
+          "originalRequest": {
+            "method": "GET",
+            "description": "List the countries the calendar covers\n\nResponses:\n- 200: The countries that have a holiday calendar.\n- 500: Response",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/AvailableCountries",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "AvailableCountries"
+              ]
+            }
+          },
+          "status": "The countries that have a holiday calendar.",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [],
+          "body": ""
+        },
+        {
+          "name": "500",
+          "originalRequest": {
+            "method": "GET",
+            "description": "List the countries the calendar covers\n\nResponses:\n- 200: The countries that have a holiday calendar.\n- 500: Response",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/AvailableCountries",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "AvailableCountries"
+              ]
+            }
+          },
+          "status": "500",
+          "code": 500,
+          "_postman_previewlanguage": "json",
+          "header": [],
+          "body": ""
+        }
+      ]
+    },
+    {
+      "name": "Get facts about a country",
+      "request": {
+        "method": "GET",
+        "description": "Get facts about a country\n\nResponses:\n- 200: Facts about the requested country.\n- 404: Response\n- 500: Response",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/CountryInfo/:countryCode",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "CountryInfo",
+            ":countryCode"
+          ],
+          "variable": [
+            {
+              "key": "countryCode",
+              "value": "{{countryCode}}",
+              "description": "Two-letter ISO 3166 country code."
+            }
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "200 Facts about the requested country.",
+          "originalRequest": {
+            "method": "GET",
+            "description": "Get facts about a country\n\nResponses:\n- 200: Facts about the requested country.\n- 404: Response\n- 500: Response",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/CountryInfo/:countryCode",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "CountryInfo",
+                ":countryCode"
+              ],
+              "variable": [
+                {
+                  "key": "countryCode",
+                  "value": "{{countryCode}}",
+                  "description": "Two-letter ISO 3166 country code."
+                }
+              ]
+            }
+          },
+          "status": "Facts about the requested country.",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [],
+          "body": ""
+        },
+        {
+          "name": "404",
+          "originalRequest": {
+            "method": "GET",
+            "description": "Get facts about a country\n\nResponses:\n- 200: Facts about the requested country.\n- 404: Response\n- 500: Response",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/CountryInfo/:countryCode",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "CountryInfo",
+                ":countryCode"
+              ],
+              "variable": [
+                {
+                  "key": "countryCode",
+                  "value": "{{countryCode}}",
+                  "description": "Two-letter ISO 3166 country code."
+                }
+              ]
+            }
+          },
+          "status": "404",
+          "code": 404,
+          "_postman_previewlanguage": "json",
+          "header": [],
+          "body": ""
+        },
+        {
+          "name": "500",
+          "originalRequest": {
+            "method": "GET",
+            "description": "Get facts about a country\n\nResponses:\n- 200: Facts about the requested country.\n- 404: Response\n- 500: Response",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/CountryInfo/:countryCode",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "CountryInfo",
+                ":countryCode"
+              ],
+              "variable": [
+                {
+                  "key": "countryCode",
+                  "value": "{{countryCode}}",
+                  "description": "Two-letter ISO 3166 country code."
+                }
+              ]
+            }
+          },
+          "status": "500",
+          "code": 500,
+          "_postman_previewlanguage": "json",
+          "header": [],
+          "body": ""
+        }
+      ]
+    },
+    {
+      "name": "List the public holidays of a country for a year",
+      "request": {
+        "method": "GET",
+        "description": "List the public holidays of a country for a year\n\nResponses:\n- 200: The public holidays of the country in that year.\n- 204: The country has no holiday data for that year.\n- 400: Response\n- 404: Response\n- 500: Response",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/PublicHolidays/:year/:countryCode",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "PublicHolidays",
+            ":year",
+            ":countryCode"
+          ],
+          "variable": [
+            {
+              "key": "year",
+              "value": "{{year}}",
+              "description": "The calendar year of the holidays."
+            },
+            {
+              "key": "countryCode",
+              "value": "{{countryCode}}",
+              "description": "Two-letter ISO 3166 country code."
+            }
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "200 The public holidays of the country in that year.",
+          "originalRequest": {
+            "method": "GET",
+            "description": "List the public holidays of a country for a year\n\nResponses:\n- 200: The public holidays of the country in that year.\n- 204: The country has no holiday data for that year.\n- 400: Response\n- 404: Response\n- 500: Response",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/PublicHolidays/:year/:countryCode",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "PublicHolidays",
+                ":year",
+                ":countryCode"
+              ],
+              "variable": [
+                {
+                  "key": "year",
+                  "value": "{{year}}",
+                  "description": "The calendar year of the holidays."
+                },
+                {
+                  "key": "countryCode",
+                  "value": "{{countryCode}}",
+                  "description": "Two-letter ISO 3166 country code."
+                }
+              ]
+            }
+          },
+          "status": "The public holidays of the country in that year.",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [],
+          "body": ""
+        },
+        {
+          "name": "204 The country has no holiday data for that year.",
+          "originalRequest": {
+            "method": "GET",
+            "description": "List the public holidays of a country for a year\n\nResponses:\n- 200: The public holidays of the country in that year.\n- 204: The country has no holiday data for that year.\n- 400: Response\n- 404: Response\n- 500: Response",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/PublicHolidays/:year/:countryCode",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "PublicHolidays",
+                ":year",
+                ":countryCode"
+              ],
+              "variable": [
+                {
+                  "key": "year",
+                  "value": "{{year}}",
+                  "description": "The calendar year of the holidays."
+                },
+                {
+                  "key": "countryCode",
+                  "value": "{{countryCode}}",
+                  "description": "Two-letter ISO 3166 country code."
+                }
+              ]
+            }
+          },
+          "status": "The country has no holiday data for that year.",
+          "code": 204,
+          "_postman_previewlanguage": "json",
+          "header": [],
+          "body": ""
+        },
+        {
+          "name": "400",
+          "originalRequest": {
+            "method": "GET",
+            "description": "List the public holidays of a country for a year\n\nResponses:\n- 200: The public holidays of the country in that year.\n- 204: The country has no holiday data for that year.\n- 400: Response\n- 404: Response\n- 500: Response",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/PublicHolidays/:year/:countryCode",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "PublicHolidays",
+                ":year",
+                ":countryCode"
+              ],
+              "variable": [
+                {
+                  "key": "year",
+                  "value": "{{year}}",
+                  "description": "The calendar year of the holidays."
+                },
+                {
+                  "key": "countryCode",
+                  "value": "{{countryCode}}",
+                  "description": "Two-letter ISO 3166 country code."
+                }
+              ]
+            }
+          },
+          "status": "400",
+          "code": 400,
+          "_postman_previewlanguage": "json",
+          "header": [],
+          "body": ""
+        },
+        {
+          "name": "404",
+          "originalRequest": {
+            "method": "GET",
+            "description": "List the public holidays of a country for a year\n\nResponses:\n- 200: The public holidays of the country in that year.\n- 204: The country has no holiday data for that year.\n- 400: Response\n- 404: Response\n- 500: Response",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/PublicHolidays/:year/:countryCode",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "PublicHolidays",
+                ":year",
+                ":countryCode"
+              ],
+              "variable": [
+                {
+                  "key": "year",
+                  "value": "{{year}}",
+                  "description": "The calendar year of the holidays."
+                },
+                {
+                  "key": "countryCode",
+                  "value": "{{countryCode}}",
+                  "description": "Two-letter ISO 3166 country code."
+                }
+              ]
+            }
+          },
+          "status": "404",
+          "code": 404,
+          "_postman_previewlanguage": "json",
+          "header": [],
+          "body": ""
+        },
+        {
+          "name": "500",
+          "originalRequest": {
+            "method": "GET",
+            "description": "List the public holidays of a country for a year\n\nResponses:\n- 200: The public holidays of the country in that year.\n- 204: The country has no holiday data for that year.\n- 400: Response\n- 404: Response\n- 500: Response",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/PublicHolidays/:year/:countryCode",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "PublicHolidays",
+                ":year",
+                ":countryCode"
+              ],
+              "variable": [
+                {
+                  "key": "year",
+                  "value": "{{year}}",
+                  "description": "The calendar year of the holidays."
+                },
+                {
+                  "key": "countryCode",
+                  "value": "{{countryCode}}",
+                  "description": "Two-letter ISO 3166 country code."
+                }
+              ]
+            }
+          },
+          "status": "500",
+          "code": 500,
+          "_postman_previewlanguage": "json",
+          "header": [],
+          "body": ""
+        }
+      ]
+    },
+    {
+      "name": "List the next public holidays of a country",
+      "request": {
+        "method": "GET",
+        "description": "List the next public holidays of a country\n\nResponses:\n- 200: The upcoming public holidays of the country.\n- 204: The country has no holiday data.\n- 404: Response\n- 500: Response",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/NextPublicHolidays/:countryCode",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "NextPublicHolidays",
+            ":countryCode"
+          ],
+          "variable": [
+            {
+              "key": "countryCode",
+              "value": "{{countryCode}}",
+              "description": "Two-letter ISO 3166 country code."
+            }
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "200 The upcoming public holidays of the country.",
+          "originalRequest": {
+            "method": "GET",
+            "description": "List the next public holidays of a country\n\nResponses:\n- 200: The upcoming public holidays of the country.\n- 204: The country has no holiday data.\n- 404: Response\n- 500: Response",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/NextPublicHolidays/:countryCode",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "NextPublicHolidays",
+                ":countryCode"
+              ],
+              "variable": [
+                {
+                  "key": "countryCode",
+                  "value": "{{countryCode}}",
+                  "description": "Two-letter ISO 3166 country code."
+                }
+              ]
+            }
+          },
+          "status": "The upcoming public holidays of the country.",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [],
+          "body": ""
+        },
+        {
+          "name": "204 The country has no holiday data.",
+          "originalRequest": {
+            "method": "GET",
+            "description": "List the next public holidays of a country\n\nResponses:\n- 200: The upcoming public holidays of the country.\n- 204: The country has no holiday data.\n- 404: Response\n- 500: Response",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/NextPublicHolidays/:countryCode",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "NextPublicHolidays",
+                ":countryCode"
+              ],
+              "variable": [
+                {
+                  "key": "countryCode",
+                  "value": "{{countryCode}}",
+                  "description": "Two-letter ISO 3166 country code."
+                }
+              ]
+            }
+          },
+          "status": "The country has no holiday data.",
+          "code": 204,
+          "_postman_previewlanguage": "json",
+          "header": [],
+          "body": ""
+        },
+        {
+          "name": "404",
+          "originalRequest": {
+            "method": "GET",
+            "description": "List the next public holidays of a country\n\nResponses:\n- 200: The upcoming public holidays of the country.\n- 204: The country has no holiday data.\n- 404: Response\n- 500: Response",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/NextPublicHolidays/:countryCode",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "NextPublicHolidays",
+                ":countryCode"
+              ],
+              "variable": [
+                {
+                  "key": "countryCode",
+                  "value": "{{countryCode}}",
+                  "description": "Two-letter ISO 3166 country code."
+                }
+              ]
+            }
+          },
+          "status": "404",
+          "code": 404,
+          "_postman_previewlanguage": "json",
+          "header": [],
+          "body": ""
+        },
+        {
+          "name": "500",
+          "originalRequest": {
+            "method": "GET",
+            "description": "List the next public holidays of a country\n\nResponses:\n- 200: The upcoming public holidays of the country.\n- 204: The country has no holiday data.\n- 404: Response\n- 500: Response",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/NextPublicHolidays/:countryCode",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "NextPublicHolidays",
+                ":countryCode"
+              ],
+              "variable": [
+                {
+                  "key": "countryCode",
+                  "value": "{{countryCode}}",
+                  "description": "Two-letter ISO 3166 country code."
+                }
+              ]
+            }
+          },
+          "status": "500",
+          "code": 500,
+          "_postman_previewlanguage": "json",
+          "header": [],
+          "body": ""
+        }
+      ]
+    },
+    {
+      "name": "List the long weekends of a country for a year",
+      "request": {
+        "method": "GET",
+        "description": "List the long weekends of a country for a year\n\nResponses:\n- 200: The long weekends of the country in that year.\n- 400: Response\n- 404: Response\n- 500: Response",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/LongWeekend/:year/:countryCode",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "LongWeekend",
+            ":year",
+            ":countryCode"
+          ],
+          "variable": [
+            {
+              "key": "year",
+              "value": "{{year}}",
+              "description": "The calendar year of the long weekends."
+            },
+            {
+              "key": "countryCode",
+              "value": "{{countryCode}}",
+              "description": "Two-letter ISO 3166 country code."
+            }
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "200 The long weekends of the country in that year.",
+          "originalRequest": {
+            "method": "GET",
+            "description": "List the long weekends of a country for a year\n\nResponses:\n- 200: The long weekends of the country in that year.\n- 400: Response\n- 404: Response\n- 500: Response",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/LongWeekend/:year/:countryCode",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "LongWeekend",
+                ":year",
+                ":countryCode"
+              ],
+              "variable": [
+                {
+                  "key": "year",
+                  "value": "{{year}}",
+                  "description": "The calendar year of the long weekends."
+                },
+                {
+                  "key": "countryCode",
+                  "value": "{{countryCode}}",
+                  "description": "Two-letter ISO 3166 country code."
+                }
+              ]
+            }
+          },
+          "status": "The long weekends of the country in that year.",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [],
+          "body": ""
+        },
+        {
+          "name": "400",
+          "originalRequest": {
+            "method": "GET",
+            "description": "List the long weekends of a country for a year\n\nResponses:\n- 200: The long weekends of the country in that year.\n- 400: Response\n- 404: Response\n- 500: Response",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/LongWeekend/:year/:countryCode",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "LongWeekend",
+                ":year",
+                ":countryCode"
+              ],
+              "variable": [
+                {
+                  "key": "year",
+                  "value": "{{year}}",
+                  "description": "The calendar year of the long weekends."
+                },
+                {
+                  "key": "countryCode",
+                  "value": "{{countryCode}}",
+                  "description": "Two-letter ISO 3166 country code."
+                }
+              ]
+            }
+          },
+          "status": "400",
+          "code": 400,
+          "_postman_previewlanguage": "json",
+          "header": [],
+          "body": ""
+        },
+        {
+          "name": "404",
+          "originalRequest": {
+            "method": "GET",
+            "description": "List the long weekends of a country for a year\n\nResponses:\n- 200: The long weekends of the country in that year.\n- 400: Response\n- 404: Response\n- 500: Response",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/LongWeekend/:year/:countryCode",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "LongWeekend",
+                ":year",
+                ":countryCode"
+              ],
+              "variable": [
+                {
+                  "key": "year",
+                  "value": "{{year}}",
+                  "description": "The calendar year of the long weekends."
+                },
+                {
+                  "key": "countryCode",
+                  "value": "{{countryCode}}",
+                  "description": "Two-letter ISO 3166 country code."
+                }
+              ]
+            }
+          },
+          "status": "404",
+          "code": 404,
+          "_postman_previewlanguage": "json",
+          "header": [],
+          "body": ""
+        },
+        {
+          "name": "500",
+          "originalRequest": {
+            "method": "GET",
+            "description": "List the long weekends of a country for a year\n\nResponses:\n- 200: The long weekends of the country in that year.\n- 400: Response\n- 404: Response\n- 500: Response",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/LongWeekend/:year/:countryCode",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "LongWeekend",
+                ":year",
+                ":countryCode"
+              ],
+              "variable": [
+                {
+                  "key": "year",
+                  "value": "{{year}}",
+                  "description": "The calendar year of the long weekends."
+                },
+                {
+                  "key": "countryCode",
+                  "value": "{{countryCode}}",
+                  "description": "Two-letter ISO 3166 country code."
+                }
+              ]
+            }
+          },
+          "status": "500",
+          "code": 500,
+          "_postman_previewlanguage": "json",
+          "header": [],
+          "body": ""
+        }
+      ]
+    }
+  ]
+}
